@@ -16,11 +16,9 @@ class UserController {
     invalidateUserCaches = async (id = null) => {
         try {
             const keys = ['users'];
-
             if (id !== null) {
                 keys.push(`user:${id}`);
             }
-
             await redisClient.del(keys);
         } catch (error) {
             console.error('Redis cache invalidation failed:', error);
