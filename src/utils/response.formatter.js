@@ -1,4 +1,3 @@
-
 const formatResponse = (content) => {
     if (!content) return "I couldn't generate a response.";
 
