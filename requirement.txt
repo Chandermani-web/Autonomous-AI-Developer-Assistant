@@ -1,0 +1,6 @@
+mkdir src/middlewares
+mkdir src/models
+mkdir src/controllers
+mkdir src/services
+
+touch src/middlewares/authMiddleware.js src/middlewares/errorMiddleware.js src/models/userModel.js src/controllers/userController.js src/services/userService.js
