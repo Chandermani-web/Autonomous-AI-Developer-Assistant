@@ -1,0 +1,6 @@
+node_modules/
+.env
+playwright/.auth/
+body.json
+skills-lock.json
+requirements.txt
