@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node cluster/master.js",
     "dev": "nodemon cluster/master.js",
-    "start:single": "node cluster/worker.js"
+    "start:single": "node cluster/worker.js",
+    "start:dev:single": "nodemon cluster/worker.js"
   },
   "keywords": [],
   "author": "",
