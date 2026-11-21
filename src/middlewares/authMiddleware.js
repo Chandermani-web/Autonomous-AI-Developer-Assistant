@@ -14,7 +14,6 @@ export const IsAuthenticated = (req, res, next) => {
         }
 
         const userId = decoded.id;
-
         req.user = decoded;
         req.userId = userId;
         next();
