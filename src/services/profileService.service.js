@@ -59,14 +59,6 @@ class ProfileService {
 
         return rows[0];  
     }
-
-    // delete = async (userId) => {
-    //     const query = `
-    //       DELETE FROM profiles WHERE user_id = $1 RETURNING *
-    //     `;
-    //     const { rows } = await pool.query(query, [userId]);
-    //     return rows[0];  
-    // }
 }
 
 export default new ProfileService();
