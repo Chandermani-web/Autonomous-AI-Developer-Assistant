@@ -204,7 +204,6 @@ class LLMEngine {
     };
 }
 
-// Export singleton instance
 const llmEngine = new LLMEngine();
 llmEngine.print();
 
