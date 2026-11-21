@@ -25,4 +25,5 @@ class GithubClient {
 }
 
 const githubClient = new GithubClient();
+
 export default githubClient;
