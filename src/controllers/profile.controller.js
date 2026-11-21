@@ -15,7 +15,6 @@ class ProfileController {
     invalidateProfileCaches = async (userId = null) => {
         try {
             const keys = ['profiles'];
-
             if (userId !== null) {
                 keys.push(`profile:${userId}`);
             }
