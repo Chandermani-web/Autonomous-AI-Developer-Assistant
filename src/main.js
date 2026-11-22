@@ -8,7 +8,7 @@ import limiter from "./middlewares/rateLimiter.js";
 import chatRouter from "./routes/chat.route.js";
 // import agentRouter from "./routes/agent.route.js";
 import githubRoutes from "./routes/assistant.route.js";
-
+// import oauth2Client from "./config/google.js";
 
 const app = express();
 
@@ -33,5 +33,20 @@ app.use("/api/profile", profileRouter);
 app.use("/api/chat", chatRouter);
 // app.use("/api/agent", agentRouter);
 app.use("/api/github", githubRoutes);
+
+// app.get('/api/auth/google/callback', async (req, res) => {
+//     try {
+//         const { code } = req.query;
+//         if (!code) {
+//             return res.status(400).send('Authorization code missing');
+//         }
+//         const { tokens } = await oauth2Client.getToken(code);
+//         console.log('Refresh token:', tokens.refresh_token);
+//         res.send('Google authorization successful. Check your terminal for the refresh token.');
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).send('Google authentication failed');
+//     }
+// });
 
 export default app;
