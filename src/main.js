@@ -7,7 +7,7 @@ import profileRouter from "./routes/profile.route.js";
 import limiter from "./middlewares/rateLimiter.js";
 import chatRouter from "./routes/chat.route.js";
 // import agentRouter from "./routes/agent.route.js";
-import githubRoutes from "./routes/github.route.js";
+import githubRoutes from "./routes/assistant.route.js";
 
 
 const app = express();
