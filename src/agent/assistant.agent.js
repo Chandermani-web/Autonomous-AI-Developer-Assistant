@@ -3,6 +3,8 @@ import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { PostgresSaver } from "@langchain/langgraph-checkpoint-postgres"
 import llmEngine from "../lib/llm.engine.js";
 import { githubTools } from "../tools/github/github.tools.js";
+import { gmailTools } from "../tools/gmail/gmail.tools.js";
+import { prompt } from "../prompts/assistant.prompt.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -21,16 +23,9 @@ await checkpointer.setup();
 const assistantAgent = createReactAgent({
     llm: llmEngine.openRouterModel,
     // llm: llmEngine.groqModel,
-    tools: githubTools,
+    tools: [...githubTools, ...gmailTools],
     checkpointer,
-    prompt: `You are an intelligent AI Developer Assistant.
-
-    - Answer general questions directly.
-    - Use GitHub tools when GitHub operations are requested.
-    - Never call tools unnecessarily.
-    - Explain technical concepts with practical examples.
-    - Remember conversation context.
-    - Never invent GitHub API results.`
+    prompt: prompt,
 });
 
 export default assistantAgent;
