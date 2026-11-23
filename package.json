@@ -7,8 +7,11 @@
     "start": "node cluster/master.js",
     "dev": "nodemon cluster/master.js",
     "start:single": "node cluster/worker.js",
-    "start:dev:single": "nodemon cluster/worker.js"
-  },
+    "worker:delete": "node src/worker/gmail/delete.worker.js",
+    "worker:send": "node src/worker/gmail/send.worker.js",
+    "dev:all": "concurrently \"npm run start:single\" \"npm run worker:delete\" \"npm run worker:send\""
+  }
+  ,
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -16,6 +19,7 @@
   "devDependencies": {
     "@supabase/server": "^1.9.2",
     "@types/pg": "^8.23.1",
+    "concurrently": "^10.0.7",
     "dotenv": "^18.0.10",
     "express": "^5.3.0",
     "nodemon": "^3.1.14"
@@ -34,13 +38,16 @@
     "@modelcontextprotocol/express": "^2.0.2",
     "@modelcontextprotocol/server": "^2.4.0",
     "@octokit/rest": "^22.0.1",
+    "@tavily/core": "^1.1.0",
     "bcrypt": "^6.0.0",
+    "bullmq": "^6.7.8",
     "compression": "^1.8.2",
     "cors": "^2.8.6",
     "express-rate-limit": "^8.7.5",
     "express-session": "^1.19.0",
     "googleapis": "^190.0.0",
     "helmet": "^8.3.0",
+    "ioredis": "^6.1.0",
     "jsonwebtoken": "^9.0.3",
     "langchain": "^1.6.7",
     "morgan": "^1.12.1",
