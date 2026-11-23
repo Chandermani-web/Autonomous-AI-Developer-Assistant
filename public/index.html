@@ -1,176 +1,103 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <title>AI Assistant</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090b10">
+  <title>Autonomous Assistant</title>
+  <link rel="stylesheet" href="/styles.css">
 </head>
-<body class="bg-[#080808] text-[#CDCBCA] min-h-screen flex items-center justify-center p-4">
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark">A</div>
+        <div><strong>Astra</strong><span>Personal AI</span></div>
+      </div>
+      <button class="new-chat" id="newChat"><span>＋</span> New conversation</button>
+      <nav class="history" id="history">
+        <p class="section-label">Recent conversations</p>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="profile"><span class="avatar">H</span><span><strong>Himanshu</strong><small>Local workspace</small></span></button>
+      </div>
+    </aside>
 
-    <div class="w-full max-w-2xl h-[85vh] border border-[#222] rounded-2xl flex flex-col bg-[#0D0D0D] shadow-2xl overflow-hidden">
+    <main class="workspace">
+      <header class="topbar">
+        <button class="icon-button mobile-menu" id="mobileMenu" aria-label="Open menu">☰</button>
+        <div class="assistant-title">
+          <div class="status-orb"></div>
+          <div><strong>Autonomous Assistant</strong><span id="agentStatus">Initializing integrations</span></div>
+        </div>
+        <div class="top-actions">
+          <button class="icon-button" id="voiceMode" title="Voice conversation" aria-label="Start voice mode">◉</button>
+          <button class="icon-button" id="refreshDashboard" title="Refresh dashboard" aria-label="Refresh dashboard">↻</button>
+        </div>
+      </header>
 
-        <!-- Header -->
-        <header class="p-5 border-b border-[#222] flex items-center justify-between">
-            <div>
-                <h1 class="text-xl font-bold text-white">AI Assistant</h1>
-                <p class="text-xs text-gray-500 mt-1">Powered by LangGraph</p>
+      <div class="dashboard" id="dashboard">
+        <section class="chat-panel" id="chatPanel">
+          <div class="messages" id="messages">
+            <div class="welcome">
+              <div class="welcome-mark">✦</div>
+              <h1>Good to see you</h1>
+              <p>Ask me to manage email, explore GitHub, inspect PostgreSQL, or research the web.</p>
+              <div class="suggestions">
+                <button data-prompt="Show me my unread emails and summarize the important ones">📧 Summarize unread email</button>
+                <button data-prompt="List my recently updated GitHub repositories">⌘ Review GitHub activity</button>
+                <button data-prompt="Show the PostgreSQL connection status and list my tables">◫ Inspect the database</button>
+                <button data-prompt="Search the web for the latest developments in AI agents">⌕ Research the latest AI news</button>
+              </div>
             </div>
-            <div class="flex items-center gap-2 text-xs text-green-400">
-                <span class="w-2 h-2 rounded-full bg-green-500"></span>
-                Online
-            </div>
-        </header>
-
-        <!-- Chat Messages -->
-        <main id="chat" class="flex-1 overflow-y-auto p-5 space-y-5">
-            <div class="text-center py-12">
-                <div class="text-4xl mb-4">✦</div>
-                <h2 class="text-2xl font-semibold text-white">How can I help you?</h2>
-                <p class="text-sm text-gray-500 mt-2">Ask me anything or let me manage your tools.</p>
-            </div>
-        </main>
-
-        <!-- Input -->
-        <footer class="p-4 border-t border-[#222]">
-            <form id="chatForm" class="flex items-center gap-3 bg-[#171717] border border-[#292929] rounded-xl p-2">
-                <input
-                    id="message"
-                    type="text"
-                    placeholder="Message your assistant..."
-                    autocomplete="off"
-                    class="flex-1 bg-transparent outline-none px-3 text-sm text-white placeholder-gray-600"
-                    required
-                >
-                <button
-                    id="sendBtn"
-                    type="submit"
-                    class="bg-[#0002CC] hover:bg-blue-700 text-white px-5 py-3 rounded-lg text-sm font-medium transition disabled:opacity-50"
-                >
-                    Send ↗
-                </button>
+          </div>
+          <div class="approval-area" id="approvalArea"></div>
+          <div class="composer-wrap">
+            <div class="tool-trace" id="toolTrace" hidden></div>
+            <form class="composer" id="chatForm">
+              <button type="button" class="mic-button" id="micButton" title="Speak" aria-label="Start speech recognition">♬</button>
+              <textarea id="message" rows="1" placeholder="Ask your assistant..." aria-label="Message"></textarea>
+              <button type="submit" class="send-button" id="sendButton" aria-label="Send message">➤</button>
             </form>
-            <p class="text-center text-[11px] text-gray-600 mt-3">AI can make mistakes. Verify important actions.</p>
-        </footer>
+            <div class="composer-meta"><span id="voiceStatus">Text mode</span><button id="soundToggle" type="button">Speaker on</button></div>
+          </div>
+        </section>
+
+        <aside class="insights" id="insights">
+          <div class="insights-header"><strong>Workspace</strong><span class="live-dot">Live</span></div>
+          <div class="insight-scroll">
+            <section class="integration-card">
+              <div class="card-heading"><span class="integration-icon gmail">M</span><div><strong>Gmail</strong><small id="gmailStatus">Checking...</small></div></div>
+              <div class="gmail-unread"><strong id="gmailUnread">—</strong><span>unread</span></div>
+              <div class="email-list" id="emailList"><div class="skeleton"></div></div>
+            </section>
+
+            <section class="integration-card">
+              <div class="card-heading"><span class="integration-icon github">GH</span><div><strong>GitHub</strong><small id="githubStatus">Checking...</small></div></div>
+              <div class="repo-list" id="repoList"><div class="skeleton"></div></div>
+            </section>
+
+            <section class="integration-card">
+              <div class="card-heading"><span class="integration-icon database">DB</span><div><strong>PostgreSQL</strong><small id="postgresStatus">Checking...</small></div></div>
+              <div class="database-summary" id="databaseSummary"><div class="skeleton"></div></div>
+            </section>
+
+            <section class="integration-card">
+              <div class="card-heading"><span class="integration-icon jobs">BQ</span><div><strong>Background jobs</strong><small id="queueStatus">Checking...</small></div></div>
+              <div class="job-summary" id="jobSummary"><div class="skeleton"></div></div>
+            </section>
+          </div>
+        </aside>
+      </div>
     </div>
 
-<script>
-    const API_URL = "http://localhost:3000/api/assistant/chat"; // Change according to your router
+  <div class="voice-overlay" id="voiceOverlay" hidden>
+    <button class="close-overlay" id="closeVoice" aria-label="Close voice mode">×</button>
+    <div class="voice-orb" id="voiceOrb"><span></span></div>
+    <h2 id="voiceTitle">Listening</h2>
+    <p id="voiceTranscript">Say what you want me to do</p>
+  </div>
 
-    let sessionId = null;
-
-    const chat = document.getElementById("chat");
-    const form = document.getElementById("chatForm");
-    const input = document.getElementById("message");
-    const sendBtn = document.getElementById("sendBtn");
-
-    function addMessage(content, sender) {
-        const wrapper = document.createElement("div");
-        wrapper.className = sender === "user"
-            ? "flex justify-end"
-            : "flex justify-start";
-
-        const bubble = document.createElement("div");
-        bubble.className = sender === "user"
-            ? "max-w-[80%] bg-[#0002CC] text-white rounded-2xl rounded-br-sm px-4 py-3 text-sm"
-            : "max-w-[80%] bg-[#191919] border border-[#292929] text-[#CDCBCA] rounded-2xl rounded-bl-sm px-4 py-3 text-sm whitespace-pre-wrap";
-
-        bubble.textContent = content;
-        wrapper.appendChild(bubble);
-        chat.appendChild(wrapper);
-        chat.scrollTop = chat.scrollHeight;
-
-        return wrapper;
-    }
-
-    async function sendRequest(payload) {
-        const response = await fetch(API_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-        });
-
-        const data = await response.json();
-
-        if (!response.ok || !data.success) {
-            throw new Error(data.message || "Request failed");
-        }
-
-        return data;
-    }
-
-    function showApproval(data) {
-        const wrapper = addMessage(data.response, "assistant");
-
-        const actions = document.createElement("div");
-        actions.className = "flex gap-2 mt-3";
-
-        const approve = document.createElement("button");
-        approve.textContent = "Approve";
-        approve.className = "bg-[#0002CC] text-white px-4 py-2 rounded-lg text-xs";
-
-        const reject = document.createElement("button");
-        reject.textContent = "Reject";
-        reject.className = "bg-[#292929] text-white px-4 py-2 rounded-lg text-xs";
-
-        approve.onclick = () => resumeAgent(true, actions);
-        reject.onclick = () => resumeAgent(false, actions);
-
-        actions.append(approve, reject);
-        wrapper.firstChild.appendChild(actions);
-    }
-
-    async function resumeAgent(approved, actions) {
-        actions.remove();
-        const loading = addMessage("Processing approval...", "assistant");
-
-        try {
-            const data = await sendRequest({ sessionId, approved });
-            loading.remove();
-
-            if (data.approvalRequired) {
-                showApproval(data);
-            } else {
-                addMessage(data.response, "assistant");
-            }
-        } catch (error) {
-            loading.remove();
-            addMessage(error.message, "assistant");
-        }
-    }
-
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const message = input.value.trim();
-        if (!message) return;
- 
-        addMessage(message, "user");
-        input.value = "";
-        sendBtn.disabled = true;
-
-        const loading = addMessage("Thinking...", "assistant");
-
-        try {
-            const data = await sendRequest({ message, sessionId });
-            sessionId = data.sessionId;
-            loading.remove();
-
-            if (data.approvalRequired) {
-                showApproval(data);
-            } else {
-                addMessage(data.response, "assistant");
-            }
-        } catch (error) {
-            loading.remove();
-            addMessage(error.message, "assistant");
-        } finally {
-            sendBtn.disabled = false;
-            input.focus();
-        }
-    });
-</script>
-
+  <script src="/app.js"></script>
 </body>
 </html>
