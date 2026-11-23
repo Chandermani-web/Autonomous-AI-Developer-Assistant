@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import pool from "./config/database.js";
 import redisClient from "./config/caching.js";
 
@@ -33,13 +34,21 @@ redisClient.connect()
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(limiter);
+app.use(cors({
+    origin: [
+        "http://localhost:5500",
+        "http://127.0.0.1:5500"
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
 // Routes
 app.use("/api/user", userRouter);
 app.use("/api/profile", profileRouter);
 app.use("/api/chat", chatRouter);
 // app.use("/api/agent", agentRouter);
-app.use("/api/github", githubRoutes);
+app.use("/api/assistant", githubRoutes);
 
 app.get('/api/auth/google/callback', async (req, res) => {
     try {
