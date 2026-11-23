@@ -2,8 +2,7 @@ import { createReactAgent } from "@langchain/langgraph/prebuilt";
 // import { MemorySaver } from "@langchain/langgraph";
 import { PostgresSaver } from "@langchain/langgraph-checkpoint-postgres"
 import llmEngine from "../lib/llm.engine.js";
-import { githubTools } from "../tools/github/github.tools.js";
-import { gmailTools } from "../tools/gmail/gmail.tools.js";
+import { allTools } from "../tools/index.js";
 import { prompt } from "../prompts/assistant.prompt.js";
 import dotenv from "dotenv";
 dotenv.config();
@@ -23,7 +22,7 @@ await checkpointer.setup();
 const assistantAgent = createReactAgent({
     llm: llmEngine.openRouterModel,
     // llm: llmEngine.groqModel,
-    tools: [...githubTools, ...gmailTools],
+    tools: allTools,
     checkpointer,
     prompt: prompt,
 });
