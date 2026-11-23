@@ -4,12 +4,8 @@ dotenv.config();
 
 class GithubClient {
     constructor() {
-        if(!process.env.GITHUB_TOKEN) {
-            throw new Error("GITHUB_TOKEN is not defined in environment variables.");
-        }
-
         this.octokit = new Octokit({
-            auth: process.env.GITHUB_TOKEN
+            auth: process.env.GITHUB_TOKEN || undefined
         });
     }
 
