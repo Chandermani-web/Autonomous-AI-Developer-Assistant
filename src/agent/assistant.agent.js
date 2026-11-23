@@ -16,7 +16,11 @@ const checkpointer = PostgresSaver.fromConnString(
     process.env.DATABASE_URL,
 )
 
-await checkpointer.setup();
+try {
+    await checkpointer.setup();
+} catch (error) {
+    console.error("PostgreSQL checkpointer unavailable:", error.message);
+}
 // await checkpointer.ensureTableExists();
 
 const assistantAgent = createReactAgent({
