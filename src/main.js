@@ -9,10 +9,14 @@ import limiter from "./middlewares/rateLimiter.js";
 import chatRouter from "./routes/chat.route.js";
 // import agentRouter from "./routes/agent.route.js";
 import githubRoutes from "./routes/assistant.route.js";
+import dashboardRoutes from "./routes/dashboard.route.js";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 import { google } from "googleapis";
 
 const app = express();
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const oauth2Client = new google.auth.OAuth2(
     process.env.GOOGLE_CLIENT_ID,
@@ -49,6 +53,8 @@ app.use("/api/profile", profileRouter);
 app.use("/api/chat", chatRouter);
 // app.use("/api/agent", agentRouter);
 app.use("/api/assistant", githubRoutes);
+app.use("/api/dashboard", dashboardRoutes);
+app.use(express.static(path.resolve(__dirname, "../public")));
 
 app.get('/api/auth/google/callback', async (req, res) => {
     try {
