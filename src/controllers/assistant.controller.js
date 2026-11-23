@@ -2,8 +2,16 @@ import assistantAgent from "../agent/assistant.agent.js";
 import { Command } from "@langchain/langgraph";
 import { randomUUID } from "node:crypto";
 import formatResponse from "../utils/response.formatter.js";
+import { getSessions } from "../services/dashboardService.service.js";
 
 class AssistantController {
+    sessions = async (_req, res) => {
+        try {
+            res.json({ success: true, data: await getSessions() });
+        } catch (error) {
+            res.status(500).json({ success: false, message: error.message });
+        }
+    };
     chat = async (req, res) => {
         try {
             const { message, sessionId: requestedSessionId, approved } = req.body;
