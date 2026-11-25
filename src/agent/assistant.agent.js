@@ -7,11 +7,6 @@ import { prompt } from "../prompts/assistant.prompt.js";
 import dotenv from "dotenv";
 dotenv.config();
 
-// const checkpointer = PostgresSaver.fromEnv({
-//     tableName: "assistant_checkpoints",
-//     connectionString: process.env.DATABASE_URL,
-// });
-
 const checkpointer = PostgresSaver.fromConnString(
     process.env.DATABASE_URL,
 )
@@ -20,12 +15,15 @@ try {
     await checkpointer.setup();
 } catch (error) {
     console.error("PostgreSQL checkpointer unavailable:", error.message);
+
+    throw error;
 }
 // await checkpointer.ensureTableExists();
 
+const agentModel = llmEngine.getAgentModel(allTools);
+
 const assistantAgent = createReactAgent({
-    llm: llmEngine.openRouterModel,
-    // llm: llmEngine.groqModel,
+    llm: async () => agentModel,
     tools: allTools,
     checkpointer,
     prompt: prompt,
