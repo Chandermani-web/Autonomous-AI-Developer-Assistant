@@ -3,101 +3,116 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#090b10">
-  <title>Autonomous Assistant</title>
+  <meta name="theme-color" content="#0b0d12">
+  <title>Astra — Personal AI Assistant</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   <div class="app-shell">
     <aside class="sidebar" id="sidebar">
-      <div class="brand">
-        <div class="brand-mark">A</div>
-        <div><strong>Astra</strong><span>Personal AI</span></div>
+      <a class="brand" href="/" aria-label="Astra home">
+        <span class="brand-mark">✦</span>
+        <span class="brand-copy"><strong>Astra</strong><small>Personal AI assistant</small></span>
+      </a>
+
+      <button class="new-chat" id="newChat" type="button">
+        <span aria-hidden="true">＋</span> New conversation
+      </button>
+
+      <div class="sidebar-label">WORKSPACE</div>
+      <div class="workspace-note">
+        <span class="workspace-dot"></span>
+        <div><strong>Personal workspace</strong><small>Private assistant session</small></div>
       </div>
-      <button class="new-chat" id="newChat"><span>＋</span> New conversation</button>
-      <nav class="history" id="history">
-        <p class="section-label">Recent conversations</p>
-      </nav>
-      <div class="sidebar-footer">
-        <button class="profile"><span class="avatar">H</span><span><strong>Himanshu</strong><small>Local workspace</small></span></button>
+
+      <div class="sidebar-bottom">
+        <div class="sidebar-hint">
+          <span class="hint-icon">⌘</span>
+          <p><strong>Make things happen.</strong><br>Ask Astra to research, organize, and take action across your connected tools.</p>
+        </div>
+        <div class="profile">
+          <span class="avatar">A</span>
+          <span><strong>Assistant workspace</strong><small>Local environment</small></span>
+        </div>
       </div>
     </aside>
 
-    <main class="workspace">
+    <main class="main">
       <header class="topbar">
-        <button class="icon-button mobile-menu" id="mobileMenu" aria-label="Open menu">☰</button>
-        <div class="assistant-title">
-          <div class="status-orb"></div>
-          <div><strong>Autonomous Assistant</strong><span id="agentStatus">Initializing integrations</span></div>
+        <button class="mobile-menu" id="mobileMenu" type="button" aria-label="Open navigation">☰</button>
+        <div class="topbar-title">
+          <span class="status-dot"></span>
+          <div><strong>Astra</strong><small id="agentStatus">Ready when you are</small></div>
         </div>
-        <div class="top-actions">
-          <button class="icon-button" id="voiceMode" title="Voice conversation" aria-label="Start voice mode">◉</button>
-          <button class="icon-button" id="refreshDashboard" title="Refresh dashboard" aria-label="Refresh dashboard">↻</button>
+        <div class="topbar-actions">
+          <button class="top-action" id="newChatTop" type="button">＋ <span>New chat</span></button>
         </div>
       </header>
 
-      <div class="dashboard" id="dashboard">
-        <section class="chat-panel" id="chatPanel">
-          <div class="messages" id="messages">
-            <div class="welcome">
-              <div class="welcome-mark">✦</div>
-              <h1>Good to see you</h1>
-              <p>Ask me to manage email, explore GitHub, inspect PostgreSQL, or research the web.</p>
-              <div class="suggestions">
-                <button data-prompt="Show me my unread emails and summarize the important ones">📧 Summarize unread email</button>
-                <button data-prompt="List my recently updated GitHub repositories">⌘ Review GitHub activity</button>
-                <button data-prompt="Show the PostgreSQL connection status and list my tables">◫ Inspect the database</button>
-                <button data-prompt="Search the web for the latest developments in AI agents">⌕ Research the latest AI news</button>
+      <div class="content-layout">
+        <section class="chat-column">
+          <div class="messages" id="messages" aria-live="polite">
+            <div class="welcome" id="welcome">
+              <div class="welcome-icon">✦</div>
+              <p class="eyebrow">YOUR PERSONAL AI ASSISTANT</p>
+              <h1>What can I help<br><span>you with today?</span></h1>
+              <p class="welcome-copy">Ask a question, explore an idea, or tell me what you need done.</p>
+              <div class="prompt-grid">
+                <button class="prompt-card" data-prompt="Find the latest developments in AI agents and summarize the most important updates.">
+                  <span class="prompt-icon purple">⌕</span><span><strong>Research something</strong><small>Find and summarize the latest information</small></span><span class="prompt-arrow">↗</span>
+                </button>
+                <button class="prompt-card" data-prompt="Help me organize and summarize my important emails.">
+                  <span class="prompt-icon blue">✉</span><span><strong>Manage my email</strong><small>Find, summarize, and organize messages</small></span><span class="prompt-arrow">↗</span>
+                </button>
+                <button class="prompt-card" data-prompt="Review my GitHub activity and help me identify what needs attention.">
+                  <span class="prompt-icon green">⌘</span><span><strong>Explore my code</strong><small>Review repositories and development activity</small></span><span class="prompt-arrow">↗</span>
+                </button>
+                <button class="prompt-card" data-prompt="Help me understand and query my PostgreSQL database.">
+                  <span class="prompt-icon amber">▤</span><span><strong>Work with data</strong><small>Query and understand structured data</small></span><span class="prompt-arrow">↗</span>
+                </button>
               </div>
             </div>
           </div>
-          <div class="approval-area" id="approvalArea"></div>
-          <div class="composer-wrap">
-            <div class="tool-trace" id="toolTrace" hidden></div>
+
+          <div class="composer-area">
+            <div class="approval-area" id="approvalArea"></div>
+            <div class="tool-trace" id="toolTrace" hidden>
+              <span class="trace-spinner"></span><span id="toolTraceText">Astra is thinking…</span>
+            </div>
             <form class="composer" id="chatForm">
-              <button type="button" class="mic-button" id="micButton" title="Speak" aria-label="Start speech recognition">♬</button>
-              <textarea id="message" rows="1" placeholder="Ask your assistant..." aria-label="Message"></textarea>
-              <button type="submit" class="send-button" id="sendButton" aria-label="Send message">➤</button>
+              <textarea id="message" rows="1" placeholder="Message Astra…" aria-label="Message Astra"></textarea>
+              <div class="composer-footer">
+                <span class="composer-note">AI can make mistakes. Review important actions.</span>
+                <button class="send-button" id="sendButton" type="submit" aria-label="Send message">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+                </button>
+              </div>
             </form>
-            <div class="composer-meta"><span id="voiceStatus">Text mode</span><button id="soundToggle" type="button">Speaker on</button></div>
+            <div class="composer-caption">Press <kbd>Enter</kbd> to send · <kbd>Shift + Enter</kbd> for a new line</div>
           </div>
         </section>
 
-        <aside class="insights" id="insights">
-          <div class="insights-header"><strong>Workspace</strong><span class="live-dot">Live</span></div>
-          <div class="insight-scroll">
-            <section class="integration-card">
-              <div class="card-heading"><span class="integration-icon gmail">M</span><div><strong>Gmail</strong><small id="gmailStatus">Checking...</small></div></div>
-              <div class="gmail-unread"><strong id="gmailUnread">—</strong><span>unread</span></div>
-              <div class="email-list" id="emailList"><div class="skeleton"></div></div>
-            </section>
-
-            <section class="integration-card">
-              <div class="card-heading"><span class="integration-icon github">GH</span><div><strong>GitHub</strong><small id="githubStatus">Checking...</small></div></div>
-              <div class="repo-list" id="repoList"><div class="skeleton"></div></div>
-            </section>
-
-            <section class="integration-card">
-              <div class="card-heading"><span class="integration-icon database">DB</span><div><strong>PostgreSQL</strong><small id="postgresStatus">Checking...</small></div></div>
-              <div class="database-summary" id="databaseSummary"><div class="skeleton"></div></div>
-            </section>
-
-            <section class="integration-card">
-              <div class="card-heading"><span class="integration-icon jobs">BQ</span><div><strong>Background jobs</strong><small id="queueStatus">Checking...</small></div></div>
-              <div class="job-summary" id="jobSummary"><div class="skeleton"></div></div>
-            </section>
+        <aside class="context-panel" aria-label="Conversation information">
+          <div class="context-heading"><span class="context-heading-icon">✦</span><div><strong>Conversation</strong><small>Your current workspace</small></div></div>
+          <div class="context-card">
+            <span class="card-kicker">SESSION</span>
+            <strong id="sessionLabel">New conversation</strong>
+            <p id="sessionDescription">A fresh session is ready. Your conversation context is maintained while you chat.</p>
+          </div>
+          <div class="context-section">
+            <span class="card-kicker">HOW I CAN HELP</span>
+            <div class="capability-row"><span class="capability-icon">⌕</span><span><strong>Research</strong><small>Search the web and explore pages</small></span></div>
+            <div class="capability-row"><span class="capability-icon">✉</span><span><strong>Productivity</strong><small>Work with your connected services</small></span></div>
+            <div class="capability-row"><span class="capability-icon">⌘</span><span><strong>Development</strong><small>Explore repositories and code</small></span></div>
+            <div class="capability-row"><span class="capability-icon">▤</span><span><strong>Data</strong><small>Work with structured information</small></span></div>
+          </div>
+          <div class="context-tip">
+            <span>✧</span><p><strong>You stay in control</strong><br>Some actions may ask for your approval before they are performed.</p>
           </div>
         </aside>
       </div>
-    </div>
-
-  <div class="voice-overlay" id="voiceOverlay" hidden>
-    <button class="close-overlay" id="closeVoice" aria-label="Close voice mode">×</button>
-    <div class="voice-orb" id="voiceOrb"><span></span></div>
-    <h2 id="voiceTitle">Listening</h2>
-    <p id="voiceTranscript">Say what you want me to do</p>
+    </main>
   </div>
-
-  <script src="/app.js"></script>
+  <script src="/app.js" defer></script>
 </body>
 </html>
