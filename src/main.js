@@ -2,14 +2,14 @@ import express from "express";
 import cors from "cors";
 import pool from "./config/database.js";
 import redisClient from "./config/caching.js";
-
+import morgan from "morgan";
 import userRouter from "./routes/user.route.js";
 import profileRouter from "./routes/profile.route.js";
 import limiter from "./middlewares/rateLimiter.js";
 import chatRouter from "./routes/chat.route.js";
 // import agentRouter from "./routes/agent.route.js";
 import githubRoutes from "./routes/assistant.route.js";
-import dashboardRoutes from "./routes/dashboard.route.js";
+// import dashboardRoutes from "./routes/dashboard.route.js";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -46,14 +46,14 @@ app.use(cors({
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"]
 }));
-
+app.use(morgan("combined"));
 // Routes
 app.use("/api/user", userRouter);
 app.use("/api/profile", profileRouter);
 app.use("/api/chat", chatRouter);
 // app.use("/api/agent", agentRouter);
 app.use("/api/assistant", githubRoutes);
-app.use("/api/dashboard", dashboardRoutes);
+// app.use("/api/dashboard", dashboardRoutes);
 app.use(express.static(path.resolve(__dirname, "../public")));
 
 app.get('/api/auth/google/callback', async (req, res) => {
